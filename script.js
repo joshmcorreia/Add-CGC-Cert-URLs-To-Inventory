@@ -10,7 +10,7 @@
 // @namespace    https://greasyfork.org/users/1220845
 // ==/UserScript==
 
-function add_links(number) {
+function add_links() {
   const cert_numbers = document.querySelectorAll(".collectible-listing td.collectible-listing-cert");
 
   cert_numbers.forEach(function(cert) {
@@ -24,5 +24,11 @@ function add_links(number) {
   })
 }
 
-// TODO: Add MutationObserver instead of polling
-setTimeout(add_links, 1000);
+(new MutationObserver(check)).observe(document, {childList: true, subtree: true});
+
+function check(changes, observer) {
+    if(document.querySelector('.collectible-listing td.collectible-listing-cert')) {
+        observer.disconnect();
+        add_links();
+    }
+}
